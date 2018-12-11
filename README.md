@@ -1,0 +1,2 @@
+# JAVAproject
+Tempalte for java
