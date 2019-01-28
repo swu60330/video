@@ -1,4 +1,8 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
 
 class TestStudentADT {
 
@@ -15,7 +19,8 @@ class TestStudentADT {
 		double quizzes;
 		double project;
 		double participation;
-	
+	Scanner sc = new Scanner(System.in);
+	int remove = 0;
 		try{
 			 
 			 StudentArray studentArray = new StudentArray();
@@ -47,7 +52,9 @@ class TestStudentADT {
 									quizzes, 
 									project, 
 									participation);
-					System.out.println(student.getScore());
+					 
+					 
+									
 					studentArray.setCurrentStudent(student);
 					//studentLinkedList.setCurrentStudent(student);
 				 }
@@ -57,16 +64,31 @@ class TestStudentADT {
 			 
 			 br.close();
 			
-			// 
-			 System.out.println("Total="+studentArray.getTotal());
-			 System.out.println("SD="+studentArray.getSD());
-			 System.out.println("Min ="+studentArray.getMin());
-			 System.out.println("Max ="+studentArray.getMax());
+			 studentArray.getAllScore();
+			 System.out.println("Max : "+studentArray.getMax());
+			// System.out.println("Min : "+studentArray.getMin());
+			 System.out.println("Mean : "+studentArray.getMean());
+			 System.out.println("SD : " +studentArray.getSD());
+			 
+			 System.out.println("---------------Remove----------------");
+			 System.out.println("Remove Index : ");
+			 remove = sc.nextInt();
+			 studentArray.remove(remove);
+			 System.out.println("---------------New Data----------------");
+			 studentArray.getAllScore();
+			 System.out.println("Max : "+studentArray.getMax());
+			// System.out.println("Min : "+studentArray.getMin());
+			 System.out.println("Mean : "+studentArray.getMean());
+			 System.out.println("SD : " +studentArray.getSD());
+			
+			 
+			/* System.out.println("-------------------------------");
+			 
+			 System.out.println("Full : " +studentArray.full());
+			 System.out.println("Empty : " +studentArray.empty());
 			 System.out.println(studentArray.toString());
-			 //System.out.println(studentLinkedList.toString());
-			 studentArray.getAllscore();
-			 studentArray.remove(0);
-			 studentArray.getAllscore();
+			 System.out.println(studentLinkedList.toString());*/
+			
 			
 		} catch(FileNotFoundException e1){
 			System.out.println("File: "+filePath+" NOT found.");
