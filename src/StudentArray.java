@@ -1,11 +1,19 @@
 public class StudentArray implements StudentADT {
 	
-	Student[] board;
+	Node head;
+	Node tail;
+	//Student[] board;
+	private class Node{
+		Student student;
+		Node next;
+	}
 	int numEntries = 0;
 
 	public StudentArray() {
-		board = new Student[100];
+		//board = new Student[100];
 		numEntries = 0;
+		head = null;
+		tail = null;
 	}
 	@Override
 	public boolean empty() {
@@ -19,9 +27,7 @@ public class StudentArray implements StudentADT {
 	@Override
 	public boolean full() {
 		// TODO Auto-generated method stub
-		if (numEntries == board.length)
-			return true;
-		else
+		
 		return false;
 	}
 
@@ -39,27 +45,29 @@ public class StudentArray implements StudentADT {
 	@Override
 	public double getSD() {
 		// TODO Auto-generated method stub
-		double allscore = 0;
-		double score = 0;
-		int N = this.numEntries;
-		for(int i=0;i<numEntries;i++) {
-			score = board[i].getScore();
-			allscore += (score-this.getMean())*(score-this.getMean());
+		double total = 0;
+		double score;
+		Node h = head;
+		while(h != null) {
+			score = h.student.getScore();
+			total+=(score-this.getMean())*(score-this.getMean());
+			h =h.next;
 		}
-		return Math.sqrt(allscore/(N-1));
+		return Math.sqrt(total/(this.numEntries-1));
 		
 	}
 
 	@Override
 	public double getMax() {
 		// TODO Auto-generated method stub
-		return board[0].getScore();
+		
+		return head.student.getScore();
 	}
 
 	@Override
 	public double getMin() {
 		// TODO Auto-generated method stub
-		return board[numEntries -1].getScore();
+		return tail.student.getScore();
 	}
 
 	@Override
@@ -67,9 +75,11 @@ public class StudentArray implements StudentADT {
 		// TODO Auto-generated method stub
 		double total = 0;
 		double score;
-		for(int i=0; i <numEntries; i++) {
-			score = board[i].getScore();
+		Node h = head;
+		while(h != null) {
+			score = h.student.getScore();
 			total+=score;
+			h =h.next;
 		}
 		return total;
 	}
@@ -81,27 +91,39 @@ public class StudentArray implements StudentADT {
 	@Override
 	public void setCurrentStudent(Student std) {
 		// TODO Auto-generated method stub
-		double score = std.getScore();
-		if(numEntries < board.length || score >board[numEntries -1].getScore()) {
-			if(numEntries < board.length)
-				numEntries++;
-			int j = numEntries-1;
-			while(j > 0 && board[j-1].getScore()<score) {
-				board[j] = board[j-1];
-				j--;
+		Node node = new Node();
+		node.student=std;
+		
+		// Add 1st node
+		if (head ==null) {
+			node.next = null;
+			head =node;
+			numEntries++;
+			tail = node;
+		}else {
+			Node h = head;
+			if(h.student.getScore() < std.getScore()) {
+				node.next = head;
+				head = node;
+			}else {
+				while(h.next.student.getScore() > std.getScore()) {
+					h = h.next;
+				}
+				node = h.next;
+				h.next = node;
 				
 			}
-			board[j]=std;
 		}
 	}
 	public void getAllscore() {
-		for(int i =0;i<numEntries;i++) {
-			double score = board[i].getScore();
-			System.out.println(score);
+		Node h = head;
+		while (h!=null) {
+			System.out.println("score=" +h.student.getScore());
+			h = h.next;
 		}
 		System.out.println("Number of Student:"+this.numEntries);
 	}
-	public Student remove(int i) {
+	/*public Student remove(int i) {
 		if(i < 0 || i>=numEntries)
 			throw new IndexOutOfBoundsException("Invalid index" +i);
 		Student temp = board[i];
@@ -110,5 +132,5 @@ public class StudentArray implements StudentADT {
 		numEntries--;
 		return temp;
 		
-	}
+	}*/
 }
